@@ -1,10 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
-export type StudyProcessDocument = StudyProcess & Document;
+export type StudyProcessTraningPointDocument = StudyProcessTraningPoint &
+  Document;
 
 @Schema()
-export class StudyProcess {
+export class StudyProcessTraningPoint {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'profiles',
@@ -18,11 +19,6 @@ export class StudyProcess {
     required: true,
   })
   semester?: mongoose.Types.ObjectId;
-
-  @Prop({
-    default: 60,
-  })
-  trainningPoints?: number;
 
   @Prop({
     type: {
@@ -55,4 +51,6 @@ export class StudyProcess {
   updateAt?: Date;
 }
 
-export const StudyProcessSchema = SchemaFactory.createForClass(StudyProcess);
+export const StudyProcessTraningPointSchema = SchemaFactory.createForClass(
+  StudyProcessTraningPoint,
+);
