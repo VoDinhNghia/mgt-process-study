@@ -1,16 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
-export type StudentAttendanceDocument = StudentAttendance & Document;
+export type StudyProcessAttendanceDocument = StudyProcessAttendance & Document;
 
 @Schema()
-export class StudentAttendance {
+export class StudyProcessAttendance {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'studyprocess',
+    ref: 'subjectregisters',
     required: true,
   })
-  studyprocess: mongoose.Types.ObjectId;
+  subjectRegister: mongoose.Types.ObjectId;
 
   @Prop()
   numberAbsent: string; // 45', 1h ...
@@ -25,5 +25,6 @@ export class StudentAttendance {
   updateAt?: Date;
 }
 
-export const StudentAttendanceSchema =
-  SchemaFactory.createForClass(StudentAttendance);
+export const StudyProcessAttendanceSchema = SchemaFactory.createForClass(
+  StudyProcessAttendance,
+);
