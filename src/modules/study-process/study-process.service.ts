@@ -27,6 +27,12 @@ export class StudyProcessService {
     if (!checkProfile) {
       new CommonException(404, 'Profile not found');
     }
+    const existed = await this.studyProcessSchema.findOne({
+      profile: new Types.ObjectId(profile),
+    });
+    if (existed) {
+      new CommonException(409, 'User study process existed already.');
+    }
     const result = await new this.studyProcessSchema(studyProcessDto).save();
     return result;
   }
