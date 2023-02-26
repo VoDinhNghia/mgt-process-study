@@ -1,4 +1,4 @@
-import { Controller, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseRequest } from 'src/abstracts/responseApi';
 import { Request, Response } from 'express';
@@ -20,5 +20,23 @@ export class StudyProcessController {
     const { body } = req;
     const result = await this.service.createStudyProcess(body);
     return new ResponseRequest(res, result, 'Create study process success.');
+  }
+
+  @Get('/calcalate-scholarship')
+  @UseGuards(KeyAccessApiGuard(keyAccessBackend))
+  async getListForScholarshipBackEnd(
+    @Req() req: Request,
+    @Res() res: Response,
+  ): Promise<ResponseRequest> {
+    // output list user => accumulated points and trainning point
+    const result = true;
+    return new ResponseRequest(res, result, 'Get list study process success.');
+  }
+
+  @Post('/import/training-point')
+  @UseGuards(KeyAccessApiGuard(keyAccessBackend))
+  async importTrainingPoint(@Res() res: Response): Promise<ResponseRequest> {
+    const result = true;
+    return new ResponseRequest(res, result, 'Create trainning point success.');
   }
 }
