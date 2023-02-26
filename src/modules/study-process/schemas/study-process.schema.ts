@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { EstatusUserProfile } from 'src/commons/constants';
 
 export type StudyProcessDocument = StudyProcess & Document;
 
@@ -10,19 +11,13 @@ export class StudyProcess {
     ref: 'profiles',
     required: true,
   })
-  user: mongoose.Types.ObjectId;
+  profile: mongoose.Types.ObjectId;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'semesters',
-    required: true,
+    type: String,
+    default: EstatusUserProfile.STUDYING,
   })
-  semester?: mongoose.Types.ObjectId;
-
-  @Prop({
-    default: 60,
-  })
-  trainningPoints?: number;
+  status: string; // Are you still studying or graduating or saving?
 
   @Prop({
     type: {
