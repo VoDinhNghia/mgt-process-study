@@ -1,48 +1,28 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
-export type StudyProcessTraningPointDocument = StudyProcessTraningPoint &
-  Document;
+export type TranningPointsDocument = TranningPoints & Document;
 
 @Schema()
-export class StudyProcessTraningPoint {
+export class TranningPoints {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'profiles',
+    ref: 'studyprocess',
     required: true,
   })
-  user: mongoose.Types.ObjectId;
+  studyprocess?: mongoose.Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'semesters',
-    required: true,
   })
   semester?: mongoose.Types.ObjectId;
 
-  @Prop({
-    type: {
-      attachment: mongoose.Schema.Types.ObjectId,
-      scores: Number,
-      expirationDate: Date,
-    },
-  })
-  toeicCertificate?: {
-    attachment: mongoose.Types.ObjectId;
-    scores: number;
-    expirationDate: Date;
-  };
+  @Prop()
+  program?: string;
 
-  @Prop({
-    type: {
-      attachment: mongoose.Schema.Types.ObjectId,
-      scores: Number,
-    },
-  })
-  itCertificate?: {
-    attachment: mongoose.Types.ObjectId;
-    scores: number;
-  };
+  @Prop()
+  point?: number;
 
   @Prop({ default: Date.now })
   createdAt?: Date;
@@ -51,6 +31,5 @@ export class StudyProcessTraningPoint {
   updateAt?: Date;
 }
 
-export const StudyProcessTraningPointSchema = SchemaFactory.createForClass(
-  StudyProcessTraningPoint,
-);
+export const StudyProcessTraningPointSchema =
+  SchemaFactory.createForClass(TranningPoints);

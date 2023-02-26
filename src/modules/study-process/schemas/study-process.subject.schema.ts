@@ -1,10 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
-export type TranningPointsDocument = TranningPoints & Document;
+export type SubjectRegisterDocument = SubjectRegisters & Document;
 
 @Schema()
-export class TranningPoints {
+export class SubjectRegisters {
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'subjects',
+    required: true,
+  })
+  subject?: mongoose.Types.ObjectId;
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'studyprocess',
@@ -13,10 +20,16 @@ export class TranningPoints {
   studyprocess?: mongoose.Types.ObjectId;
 
   @Prop()
-  program?: string;
+  statusRegister?: boolean; // true: register success.
 
   @Prop()
-  point?: number;
+  midtermScore?: number;
+
+  @Prop()
+  finalScore?: number; // if attendance absent > 3 then 0;
+
+  @Prop()
+  essayCore?: number;
 
   @Prop({ default: Date.now })
   createdAt?: Date;
@@ -25,4 +38,5 @@ export class TranningPoints {
   updateAt?: Date;
 }
 
-export const TranningPointSchema = SchemaFactory.createForClass(TranningPoints);
+export const SubjectRegisterSchema =
+  SchemaFactory.createForClass(SubjectRegisters);

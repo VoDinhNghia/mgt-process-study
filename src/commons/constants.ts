@@ -34,4 +34,12 @@ export const statusUser = {
   ENUM: ['ACTIVE', 'INACTIVE'],
 };
 
+export enum EstatusUserProfile {
+  STUDYING = 'STUDYING',
+  GRADUATE = 'GRADUATE',
+  SAVEING = 'SAVEING',
+  RESERVE = 'RESERVE',
+  LEAVE = 'LEAVE',
+}
+
 export const keyAccessBackend = 'course-access-key-secrect';
