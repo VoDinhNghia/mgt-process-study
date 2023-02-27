@@ -5,7 +5,7 @@ import { ToeicCertificateDto } from './study-process.toeicCer.dto';
 
 export class CreateStudyProcessDto {
   @ApiProperty({ required: true })
-  profile?: string;
+  user?: string;
 
   @ApiProperty({
     required: true,
