@@ -22,10 +22,10 @@ export class StudyProcessService {
   async createStudyProcess(
     studyProcessDto: CreateStudyProcessDto,
   ): Promise<StudyProcess> {
-    const { profile } = studyProcessDto;
-    const options = { user: new Types.ObjectId(profile) };
+    const { user } = studyProcessDto;
+    const options = { user: new Types.ObjectId(user) };
     const checkProfile = await this.db.collection('profiles').findOne({
-      _id: new Types.ObjectId(profile),
+      _id: new Types.ObjectId(user),
     });
     if (!checkProfile) {
       new CommonException(404, 'Profile not found');
