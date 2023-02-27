@@ -11,13 +11,13 @@ export class StudyProcess {
     ref: 'profiles',
     required: true,
   })
-  profile: mongoose.Types.ObjectId;
+  user?: mongoose.Types.ObjectId;
 
   @Prop({
     type: String,
     default: EstatusUserProfile.STUDYING,
   })
-  status: string; // Are you still studying or graduating or saving?
+  status?: string; // Are you still studying or graduating or saving?
 
   @Prop({
     type: {
