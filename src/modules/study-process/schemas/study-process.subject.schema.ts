@@ -26,7 +26,7 @@ export class SubjectRegisters {
   midtermScore?: number;
 
   @Prop()
-  finalScore?: number; // if attendance absent > 3 then 0;
+  finalScore?: number; // if attendance absent > 3 then 0 (check finalScore when create);
 
   @Prop()
   essayCore?: number;

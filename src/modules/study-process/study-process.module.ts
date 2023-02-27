@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ValidateField } from 'src/abstracts/validateFieldById';
 import { DbConnection } from 'src/commons/dBConnection';
 import {
   StudyProcess,
@@ -15,6 +16,6 @@ import { StudyProcessService } from './study-process.service';
     ]),
   ],
   controllers: [StudyProcessController],
-  providers: [StudyProcessService, DbConnection],
+  providers: [StudyProcessService, DbConnection, ValidateField],
 })
 export class StudyProcessModule {}
