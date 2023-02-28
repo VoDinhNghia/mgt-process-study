@@ -6,6 +6,10 @@ import {
   StudyProcess,
   StudyProcessSchema,
 } from './schemas/study-process.schema';
+import {
+  SubjectRegisters,
+  SubjectRegisterSchema,
+} from './schemas/study-process.subject.schema';
 import { StudyProcessController } from './study-process.controller';
 import { StudyProcessService } from './study-process.service';
 
@@ -13,6 +17,7 @@ import { StudyProcessService } from './study-process.service';
   imports: [
     MongooseModule.forFeature([
       { name: StudyProcess.name, schema: StudyProcessSchema },
+      { name: SubjectRegisters.name, schema: SubjectRegisterSchema },
     ]),
   ],
   controllers: [StudyProcessController],
