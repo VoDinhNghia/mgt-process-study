@@ -6,12 +6,12 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
     .addBearerAuth()
-    .setTitle('Course Management')
-    .setDescription('The course management API description')
+    .setTitle('Study Process Management')
+    .setDescription('The Study Process management API description')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api-docs-course', app, document);
+  SwaggerModule.setup('api-docs-study-process', app, document);
   app.enableCors({
     origin: ['http://localhost:3000', 'http://localhost:3001'],
     methods: ['GET', 'POST', 'DELETE', 'PUT'],
