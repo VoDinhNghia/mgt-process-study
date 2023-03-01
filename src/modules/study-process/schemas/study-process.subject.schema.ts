@@ -14,7 +14,7 @@ export class SubjectRegisters {
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'studyprocess',
+    ref: 'studyprocesses',
     required: true,
   })
   studyprocess?: mongoose.Types.ObjectId;
@@ -26,7 +26,13 @@ export class SubjectRegisters {
   midtermScore?: number;
 
   @Prop()
-  finalScore?: number; // if attendance absent > 3 then 0 (check finalScore when create);
+  finalScore?: number;
+
+  @Prop()
+  accumalatedPoint?: number; // if attendance absent > 3 then 0 (check finalScore when create);
+
+  @Prop()
+  status: string;
 
   @Prop()
   essayCore?: number;

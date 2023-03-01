@@ -24,17 +24,37 @@ export class StudyProcessService {
     subjectDto: CreateStudySubjectProcessDto,
   ): Promise<SubjectRegisters> {
     const { subject, studyprocess } = subjectDto;
+    const studyProcess = await this.db
+      .collection('studyprocesses')
+      .findOne({ _id: new Types.ObjectId(studyprocess) });
+    if (!studyProcess) {
+      new CommonException(404, 'User study process not found.');
+    }
     await this.validateSubject(subject, studyprocess);
     const result = await new this.subjectSchema(subjectDto).save();
     return result;
   }
 
-  async updateSubjectRegister(
+  async updatePointSubject(
     id: string,
     subjectDto: UpdateStudySubjectProcessDto,
   ): Promise<SubjectRegisters> {
-    const result = await this.subjectSchema.findByIdAndUpdate(id, subjectDto);
+    const newDocument = await this.subjectSchema.findByIdAndUpdate(
+      id,
+      subjectDto,
+    );
+    const result = await this.findSubjectRegisterById(newDocument._id);
     return result;
+  }
+
+  async findSubjectRegisterById(id: string): Promise<SubjectRegisters> {
+    const agg = [{ $match: { _id: new Types.ObjectId(id) } }];
+    const aggregate = this.lookupCommon(agg);
+    const result = await this.subjectSchema.aggregate(aggregate);
+    if (!result[0]) {
+      new CommonException(404, 'Subject register not found.');
+    }
+    return result[0];
   }
 
   calculateAccumulatedPoint(point: number, percent: number) {
@@ -74,5 +94,30 @@ export class StudyProcessService {
     if (subjectInfo.size <= getAllRegister.length) {
       new CommonException(409, 'Sufficient number of students have registered');
     }
+  }
+
+  lookupCommon(agg = []) {
+    const aggregate = [
+      ...agg,
+      {
+        $lookup: {
+          from: 'subjects',
+          localField: 'subject',
+          foreignField: '_id',
+          as: 'subject',
+        },
+      },
+      { $unwind: '$subject' },
+      {
+        $lookup: {
+          from: 'studyprocesses',
+          localField: 'studyprocess',
+          foreignField: '_id',
+          as: 'studyprocess',
+        },
+      },
+      { $unwind: '$studyprocess' },
+    ];
+    return aggregate;
   }
 }
