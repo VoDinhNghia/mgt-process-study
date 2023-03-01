@@ -3,6 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ValidateField } from 'src/abstracts/validateFieldById';
 import { DbConnection } from 'src/commons/dBConnection';
 import {
+  ConfigConditionPassSubject,
+  ConfigConditionPassSubjectSchema,
+} from '../config-condition-pass/schemas/config.condition-pass.schema';
+import {
   SubjectRegisters,
   SubjectRegisterSchema,
 } from './schemas/study-process.subject.schema';
@@ -13,6 +17,10 @@ import { StudyProcessService } from './study-process.service';
   imports: [
     MongooseModule.forFeature([
       { name: SubjectRegisters.name, schema: SubjectRegisterSchema },
+      {
+        name: ConfigConditionPassSubject.name,
+        schema: ConfigConditionPassSubjectSchema,
+      },
     ]),
   ],
   controllers: [StudyProcessController],

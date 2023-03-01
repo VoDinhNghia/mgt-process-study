@@ -1,9 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { Model, ObjectId, Types } from 'mongoose';
 import { CommonException } from 'src/abstracts/execeptionError';
 import { ValidateField } from 'src/abstracts/validateFieldById';
+import {
+  EtypeConfigCoditionPassSubject,
+  EtypeStatusSubjectStudy,
+} from 'src/commons/constants';
 import { DbConnection } from 'src/commons/dBConnection';
+import {
+  ConfigConditionPassSubject,
+  ConfigConditionPassSubjectDocument,
+} from '../config-condition-pass/schemas/config.condition-pass.schema';
 import { CreateStudySubjectProcessDto } from './dtos/study-process.subject.dto';
 import { UpdateStudySubjectProcessDto } from './dtos/study-process.subject.update.dto';
 import {
@@ -16,6 +24,8 @@ export class StudyProcessService {
   constructor(
     @InjectModel(SubjectRegisters.name)
     private readonly subjectSchema: Model<SubjectRegisterDocument>,
+    @InjectModel(ConfigConditionPassSubject.name)
+    private readonly configSchema: Model<ConfigConditionPassSubjectDocument>,
     private readonly db: DbConnection,
     private readonly validate: ValidateField,
   ) {}
@@ -31,7 +41,8 @@ export class StudyProcessService {
       new CommonException(404, 'User study process not found.');
     }
     await this.validateSubject(subject, studyprocess);
-    const result = await new this.subjectSchema(subjectDto).save();
+    const newDocument = await new this.subjectSchema(subjectDto).save();
+    const result = await this.findSubjectRegisterById(newDocument._id);
     return result;
   }
 
@@ -39,12 +50,51 @@ export class StudyProcessService {
     id: string,
     subjectDto: UpdateStudySubjectProcessDto,
   ): Promise<SubjectRegisters> {
-    const newDocument = await this.subjectSchema.findByIdAndUpdate(
-      id,
-      subjectDto,
-    );
-    const result = await this.findSubjectRegisterById(newDocument._id);
+    const subjectRegister = await this.subjectSchema.findById(id);
+    if (!subjectRegister) {
+      new CommonException(404, 'Subject register not found.');
+    }
+    if (subjectRegister.accumalatedPoint && subjectRegister.status) {
+      new CommonException(
+        403,
+        'You are permission edit points, please contact with admin to edit.',
+      );
+    }
+    const dto: Record<string, any> = subjectDto;
+    if (subjectDto.finalScore) {
+      const conditionAccumlatedPoint = await this.findConditionPassSubject(
+        EtypeConfigCoditionPassSubject.ACCUMULATED_POINT,
+      );
+      const conditionFinalPoint = await this.findConditionPassSubject(
+        EtypeConfigCoditionPassSubject.FINAL_EXAM_POINT,
+      );
+      let accumalatedPoint = 0;
+      if (subjectDto.finalScore < conditionFinalPoint) {
+        accumalatedPoint = subjectDto.finalScore;
+      } else {
+        accumalatedPoint = await this.calculateAccumulatedPoint(
+          subjectRegister.subject,
+          subjectDto,
+        );
+      }
+      dto.accumalatedPoint = accumalatedPoint;
+      if (accumalatedPoint >= conditionAccumlatedPoint) {
+        dto.status = EtypeStatusSubjectStudy.PASS;
+      } else {
+        dto.status = EtypeStatusSubjectStudy.FAILED;
+      }
+    }
+    await this.subjectSchema.findByIdAndUpdate(id, dto);
+    const result = await this.findSubjectRegisterById(id);
     return result;
+  }
+
+  async findConditionPassSubject(type: string): Promise<number> {
+    const result = await this.configSchema.findOne({ type });
+    if (!result) {
+      new CommonException(404, 'Config not found.');
+    }
+    return result.condition;
   }
 
   async findSubjectRegisterById(id: string): Promise<SubjectRegisters> {
@@ -57,9 +107,32 @@ export class StudyProcessService {
     return result[0];
   }
 
-  calculateAccumulatedPoint(point: number, percent: number) {
-    const accumulatedPoint = (point * percent) / 100;
-    return accumulatedPoint;
+  async calculateAccumulatedPoint(
+    subjectId: ObjectId | any,
+    subjectPointsDto: UpdateStudySubjectProcessDto,
+  ) {
+    const cursorAgg = await this.db.collection('subjects').aggregate([
+      { $match: { _id: subjectId } },
+      {
+        $lookup: {
+          from: 'subjectprocesses',
+          localField: '_id',
+          foreignField: 'subject',
+          as: 'process',
+        },
+      },
+      { $unwind: '$process' },
+    ]);
+    const subjectInfo = await cursorAgg?.toArray();
+    const { midTermTest, finalExam, studentEssay } =
+      subjectInfo[0].process ?? {};
+    const pointMid =
+      (midTermTest.percent * (subjectPointsDto.midtermScore || 0)) / 100;
+    const pointEsasy =
+      (studentEssay.percent * (subjectPointsDto.essayCore || 0)) / 100;
+    const pointFinal = (finalExam.percent * subjectPointsDto.finalScore) / 100;
+    const accumalatedPoint = pointEsasy + pointFinal + pointMid;
+    return accumalatedPoint;
   }
 
   async validateSubject(
