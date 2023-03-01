@@ -43,3 +43,8 @@ export enum EstatusUserProfile {
 }
 
 export const keyAccessBackend = 'course-access-key-secrect';
+
+export enum EtypeConfigCoditionPassSubject {
+  FINAL_EXAM_POINT = 'FINAL_EXAM_POINT',
+  ACCUMULATED_POINT = 'ACCUMULATED_POINT',
+}
