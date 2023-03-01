@@ -8,7 +8,7 @@ import { Response } from 'express';
 import { UsersFillterDto } from './dto/user.filter.dto';
 import { ResponseRequest } from 'src/abstracts/responseApi';
 
-@Controller('users')
+@Controller('api/users')
 @ApiTags('users')
 export class UsersController {
   constructor(private readonly service: UsersService) {}
