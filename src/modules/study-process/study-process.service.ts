@@ -4,13 +4,8 @@ import { Model, Types } from 'mongoose';
 import { CommonException } from 'src/abstracts/execeptionError';
 import { ValidateField } from 'src/abstracts/validateFieldById';
 import { DbConnection } from 'src/commons/dBConnection';
-import { CreateStudyProcessDto } from './dtos/study-process.create.dto';
 import { CreateStudySubjectProcessDto } from './dtos/study-process.subject.dto';
 import { UpdateStudySubjectProcessDto } from './dtos/study-process.subject.update.dto';
-import {
-  StudyProcess,
-  StudyProcessDocument,
-} from './schemas/study-process.schema';
 import {
   SubjectRegisterDocument,
   SubjectRegisters,
@@ -19,33 +14,11 @@ import {
 @Injectable()
 export class StudyProcessService {
   constructor(
-    @InjectModel(StudyProcess.name)
-    private readonly studyProcessSchema: Model<StudyProcessDocument>,
     @InjectModel(SubjectRegisters.name)
     private readonly subjectSchema: Model<SubjectRegisterDocument>,
     private readonly db: DbConnection,
     private readonly validate: ValidateField,
   ) {}
-
-  async createStudyProcess(
-    studyProcessDto: CreateStudyProcessDto,
-  ): Promise<StudyProcess> {
-    const { user } = studyProcessDto;
-    const options = { user: new Types.ObjectId(user) };
-    const checkProfile = await this.db.collection('profiles').findOne({
-      _id: new Types.ObjectId(user),
-    });
-    if (!checkProfile) {
-      new CommonException(404, 'Profile not found');
-    }
-    await this.validate.existed(
-      this.studyProcessSchema,
-      options,
-      'User study process',
-    );
-    const result = await new this.studyProcessSchema(studyProcessDto).save();
-    return result;
-  }
 
   async createSubjectRegister(
     subjectDto: CreateStudySubjectProcessDto,
