@@ -3,10 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ValidateField } from 'src/abstracts/validateFieldById';
 import { DbConnection } from 'src/commons/dBConnection';
 import {
-  StudyProcess,
-  StudyProcessSchema,
-} from './schemas/study-process.schema';
-import {
   SubjectRegisters,
   SubjectRegisterSchema,
 } from './schemas/study-process.subject.schema';
@@ -16,7 +12,6 @@ import { StudyProcessService } from './study-process.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: StudyProcess.name, schema: StudyProcessSchema },
       { name: SubjectRegisters.name, schema: SubjectRegisterSchema },
     ]),
   ],
