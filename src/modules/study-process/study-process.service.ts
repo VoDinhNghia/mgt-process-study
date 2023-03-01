@@ -6,6 +6,7 @@ import { ValidateField } from 'src/abstracts/validateFieldById';
 import { DbConnection } from 'src/commons/dBConnection';
 import { CreateStudyProcessDto } from './dtos/study-process.create.dto';
 import { CreateStudySubjectProcessDto } from './dtos/study-process.subject.dto';
+import { UpdateStudySubjectProcessDto } from './dtos/study-process.subject.update.dto';
 import {
   StudyProcess,
   StudyProcessDocument,
@@ -52,6 +53,14 @@ export class StudyProcessService {
     const { subject, studyprocess } = subjectDto;
     await this.validateSubject(subject, studyprocess);
     const result = await new this.subjectSchema(subjectDto).save();
+    return result;
+  }
+
+  async updateSubjectRegister(
+    id: string,
+    subjectDto: UpdateStudySubjectProcessDto,
+  ): Promise<SubjectRegisters> {
+    const result = await this.subjectSchema.findByIdAndUpdate(id, subjectDto);
     return result;
   }
 

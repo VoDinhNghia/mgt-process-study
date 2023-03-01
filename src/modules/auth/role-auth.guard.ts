@@ -22,6 +22,9 @@ export const RoleGuard = (type: string): Type<CanActivate> => {
         case roleTypeAccessApi.LIBRARIAN:
           result = permission.LIBRARIAN.includes(user.role);
           break;
+        case roleTypeAccessApi.LECTURER:
+          result = permission.LECTURER.includes(user.role);
+          break;
         default:
           result = false;
           break;
