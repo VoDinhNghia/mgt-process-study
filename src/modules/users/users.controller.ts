@@ -21,7 +21,7 @@ export class UsersController {
     @Query() usersFillterDto: UsersFillterDto,
     @Res() res: Response,
   ): Promise<ResponseRequest> {
-    const result = await this.service.getAll(usersFillterDto);
+    const result = await this.service.getAllUsers(usersFillterDto);
     return new ResponseRequest(res, result, 'Get all users success');
   }
 
