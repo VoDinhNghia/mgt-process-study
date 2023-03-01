@@ -9,21 +9,17 @@ import { DbConnection } from 'src/commons/dBConnection';
 export class UsersService {
   constructor(private readonly db: DbConnection) {}
 
-  async findByEmailAndPass(email: string, passWord: string) {
-    const pass = cryptoPassWord(passWord);
+  async findUserAuth(email: string, passWord: string): Promise<any> {
+    const password = cryptoPassWord(passWord);
     const result = await this.db.collection('users').findOne({
       email,
-      passWord: pass,
+      passWord: password,
       status: statusUser.ACTIVE,
     });
     return result;
   }
 
-  async findByEmail(email: string) {
-    return this.db.collection('users').findOne({ email });
-  }
-
-  async getAll(query: UsersFillterDto) {
+  async getAllUsers(query: UsersFillterDto) {
     const { searchKey, limit, page, role, status } = query;
     const match: Record<string, any> = { $match: {} };
     if (role) {
