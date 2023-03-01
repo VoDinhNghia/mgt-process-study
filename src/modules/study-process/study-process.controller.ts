@@ -7,7 +7,7 @@ import { StudyProcessService } from './study-process.service';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateStudySubjectProcessDto } from './dtos/study-process.subject.dto';
-import { Param, UseInterceptors } from '@nestjs/common/decorators';
+import { Get, Param, UseInterceptors } from '@nestjs/common/decorators';
 import { UpdateStudySubjectProcessDto } from './dtos/study-process.subject.update.dto';
 import { ValidatePropertyGuard } from 'src/abstracts/validateUpdateSubjectRegister';
 
@@ -28,7 +28,7 @@ export class StudyProcessController {
     return new ResponseRequest(res, result, 'Create subject register success.');
   }
 
-  @Put('/subject-register/:id')
+  @Put('/subject-register/update-point/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(roleTypeAccessApi.LECTURER))
@@ -38,7 +38,7 @@ export class StudyProcessController {
     @Body() subjectDto: UpdateStudySubjectProcessDto,
     @Res() res: Response,
   ): Promise<ResponseRequest> {
-    const result = await this.service.updateSubjectRegister(id, subjectDto);
+    const result = await this.service.updatePointSubject(id, subjectDto);
     return new ResponseRequest(res, result, 'Update subject register success.');
   }
 
@@ -49,5 +49,21 @@ export class StudyProcessController {
   async importTrainingPoint(@Res() res: Response): Promise<ResponseRequest> {
     const result = true;
     return new ResponseRequest(res, result, 'Create trainning point success.');
+  }
+
+  @Get('/subject-register/:id')
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard)
+  @UseGuards(RoleGuard(roleTypeAccessApi.FULL))
+  async getSubjectRegisterById(
+    @Param('id') id: string,
+    @Res() res: Response,
+  ): Promise<ResponseRequest> {
+    const result = await this.service.findSubjectRegisterById(id);
+    return new ResponseRequest(
+      res,
+      result,
+      'Get subject register by id success.',
+    );
   }
 }
