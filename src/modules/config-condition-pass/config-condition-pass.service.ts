@@ -19,7 +19,7 @@ export class ConfigConditionPassService {
   async createConfigConditionSubject(
     configDto: CreateConfigConditionSubjectDto,
   ): Promise<ConfigConditionPassSubject> {
-    const result = await new this.schema(configDto);
+    const result = await new this.schema(configDto).save();
     return result;
   }
 

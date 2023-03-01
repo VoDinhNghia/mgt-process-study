@@ -48,3 +48,8 @@ export enum EtypeConfigCoditionPassSubject {
   FINAL_EXAM_POINT = 'FINAL_EXAM_POINT',
   ACCUMULATED_POINT = 'ACCUMULATED_POINT',
 }
+
+export enum EtypeStatusSubjectStudy {
+  PASS = 'PASS',
+  FAILED = 'FAILED',
+}
