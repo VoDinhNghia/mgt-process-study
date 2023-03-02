@@ -42,15 +42,6 @@ export class StudyProcessController {
     return new ResponseRequest(res, result, 'Update subject register success.');
   }
 
-  @Post('/import/training-point')
-  @ApiBearerAuth()
-  @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
-  async importTrainingPoint(@Res() res: Response): Promise<ResponseRequest> {
-    const result = true;
-    return new ResponseRequest(res, result, 'Create trainning point success.');
-  }
-
   @Get('/subject-register/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)

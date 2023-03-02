@@ -25,7 +25,10 @@ export class TranningPoints {
   program?: mongoose.Types.ObjectId;
 
   @Prop({ default: false })
-  attendance?: boolean;
+  status?: boolean;
+
+  @Prop()
+  attendance?: Date;
 
   @Prop({ default: Date.now })
   createdAt?: Date;
@@ -34,5 +37,4 @@ export class TranningPoints {
   updateAt?: Date;
 }
 
-export const StudyProcessTraningPointSchema =
-  SchemaFactory.createForClass(TranningPoints);
+export const TranningPointSchema = SchemaFactory.createForClass(TranningPoints);

@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { mongoUrl } from './configs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigConditionModule } from './modules/config-condition/config-condition.module';
+import { MgtTrainningPointModule } from './modules/mgt-trainning-point/mgt-trainning-point.module';
 import { StudyProcessModule } from './modules/study-process/study-process.module';
 import { UsersModule } from './modules/users/users.module';
 
@@ -20,6 +21,7 @@ import { UsersModule } from './modules/users/users.module';
     AuthModule,
     StudyProcessModule,
     ConfigConditionModule,
+    MgtTrainningPointModule,
   ],
   controllers: [AppController],
   providers: [AppService],
