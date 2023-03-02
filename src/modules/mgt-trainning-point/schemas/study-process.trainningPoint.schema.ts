@@ -24,6 +24,9 @@ export class TranningPoints {
   })
   program?: mongoose.Types.ObjectId;
 
+  @Prop({ default: false })
+  attendance?: boolean;
+
   @Prop({ default: Date.now })
   createdAt?: Date;
 
