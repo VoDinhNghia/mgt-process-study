@@ -60,8 +60,8 @@ export class StudyProcessService {
         'You are permission edit points, please contact with admin to edit.',
       );
     }
-    const dto: Record<string, any> = subjectDto;
-    if (subjectDto.finalScore) {
+    const updatePointsDto: Record<string, any> = subjectDto;
+    if (updatePointsDto.finalScore) {
       const conditionAccumlatedPoint = await this.findConditionPassSubject(
         EtypeConfigCoditionPassSubject.ACCUMULATED_POINT,
       );
@@ -69,22 +69,26 @@ export class StudyProcessService {
         EtypeConfigCoditionPassSubject.FINAL_EXAM_POINT,
       );
       let accumalatedPoint = 0;
-      if (subjectDto.finalScore < conditionFinalPoint) {
+      if (updatePointsDto.finalScore < conditionFinalPoint) {
         accumalatedPoint = subjectDto.finalScore;
       } else {
+        updatePointsDto.midtermScore =
+          subjectDto.midtermScore || subjectRegister.midtermScore || 0;
+        updatePointsDto.essayScore =
+          subjectDto.essayScore || subjectRegister.essayScore || 0;
         accumalatedPoint = await this.calculateAccumulatedPoint(
           subjectRegister.subject,
-          subjectDto,
+          updatePointsDto,
         );
       }
-      dto.accumalatedPoint = accumalatedPoint;
+      updatePointsDto.accumalatedPoint = accumalatedPoint;
       if (accumalatedPoint >= conditionAccumlatedPoint) {
-        dto.status = EtypeStatusSubjectStudy.PASS;
+        updatePointsDto.status = EtypeStatusSubjectStudy.PASS;
       } else {
-        dto.status = EtypeStatusSubjectStudy.FAILED;
+        updatePointsDto.status = EtypeStatusSubjectStudy.FAILED;
       }
     }
-    await this.subjectSchema.findByIdAndUpdate(id, dto);
+    await this.subjectSchema.findByIdAndUpdate(id, updatePointsDto);
     const result = await this.findSubjectRegisterById(id);
     return result;
   }
@@ -110,7 +114,7 @@ export class StudyProcessService {
   async calculateAccumulatedPoint(
     subjectId: ObjectId | any,
     subjectPointsDto: UpdateStudySubjectProcessDto,
-  ) {
+  ): Promise<number> {
     const cursorAgg = await this.db.collection('subjects').aggregate([
       { $match: { _id: subjectId } },
       {
@@ -127,9 +131,9 @@ export class StudyProcessService {
     const { midTermTest, finalExam, studentEssay } =
       subjectInfo[0].process ?? {};
     const pointMid =
-      (midTermTest.percent * (subjectPointsDto.midtermScore || 0)) / 100;
+      (midTermTest.percent * subjectPointsDto.midtermScore) / 100;
     const pointEsasy =
-      (studentEssay.percent * (subjectPointsDto.essayCore || 0)) / 100;
+      (studentEssay.percent * subjectPointsDto.essayScore) / 100;
     const pointFinal = (finalExam.percent * subjectPointsDto.finalScore) / 100;
     const accumalatedPoint = pointEsasy + pointFinal + pointMid;
     return accumalatedPoint;

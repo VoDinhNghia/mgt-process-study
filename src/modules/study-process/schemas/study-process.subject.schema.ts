@@ -35,7 +35,7 @@ export class SubjectRegisters {
   status: string;
 
   @Prop()
-  essayCore?: number;
+  essayScore?: number;
 
   @Prop({ default: Date.now })
   createdAt?: Date;
