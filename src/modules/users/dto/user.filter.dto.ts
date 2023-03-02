@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { statusUser, ErolesEnum } from 'src/commons/constants';
+import { statusUser, ErolesEnum } from 'src/constants/constant';
 
 export class UsersFillterDto {
   @ApiProperty({ required: false, enum: ErolesEnum })

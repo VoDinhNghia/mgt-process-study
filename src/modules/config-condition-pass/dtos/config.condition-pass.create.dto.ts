@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { EtypeConfigCoditionPassSubject } from 'src/commons/constants';
+import { EtypeConfigCoditionPassSubject } from 'src/constants/constant';
 
 export class CreateConfigConditionSubjectDto {
   @ApiProperty({ required: true, default: 'Condition accumulated point' })

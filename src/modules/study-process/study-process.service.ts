@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId, Types } from 'mongoose';
-import { CommonException } from 'src/abstracts/execeptionError';
-import { ValidateField } from 'src/abstracts/validateFieldById';
+import { CommonException } from 'src/exceptions/execeptionError';
+import { ValidateField } from 'src/validates/validateFieldById';
 import {
   EtypeConfigCoditionPassSubject,
   EtypeStatusSubjectStudy,
-} from 'src/commons/constants';
-import { DbConnection } from 'src/commons/dBConnection';
+} from 'src/constants/constant';
+import { DbConnection } from 'src/constants/dBConnection';
 import {
   ConfigConditionPassSubject,
   ConfigConditionPassSubjectDocument,

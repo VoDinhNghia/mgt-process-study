@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CommonException } from 'src/abstracts/execeptionError';
+import { CommonException } from 'src/exceptions/execeptionError';
 import { CreateConfigConditionSubjectDto } from './dtos/config.condition-pass.create.dto';
 import { UpdateConfigConditionSubjectDto } from './dtos/config.condition-pass.update.dto';
 import {

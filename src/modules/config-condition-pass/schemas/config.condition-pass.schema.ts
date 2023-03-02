@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { EtypeConfigCoditionPassSubject } from 'src/commons/constants';
+import { EtypeConfigCoditionPassSubject } from 'src/constants/constant';
 
 export type ConfigConditionPassSubjectDocument = ConfigConditionPassSubject &
   Document;

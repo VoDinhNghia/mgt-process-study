@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ValidateField } from 'src/abstracts/validateFieldById';
-import { DbConnection } from 'src/commons/dBConnection';
+import { ValidateField } from 'src/validates/validateFieldById';
+import { DbConnection } from 'src/constants/dBConnection';
 import {
   ConfigConditionPassSubject,
   ConfigConditionPassSubjectSchema,

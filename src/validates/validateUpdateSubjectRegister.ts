@@ -1,7 +1,7 @@
 import { CallHandler, ExecutionContext, NestInterceptor } from '@nestjs/common';
 import { of } from 'rxjs';
 import { UpdateStudySubjectProcessDto } from 'src/modules/study-process/dtos/study-process.subject.update.dto';
-import { CommonException } from './execeptionError';
+import { CommonException } from '../exceptions/execeptionError';
 
 export class ValidatePropertyGuard implements NestInterceptor {
   async intercept(context: ExecutionContext, next: CallHandler) {

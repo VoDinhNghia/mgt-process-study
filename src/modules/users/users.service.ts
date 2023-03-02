@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
-import { cryptoPassWord } from 'src/commons/crypto';
-import { statusUser } from 'src/commons/constants';
+import { cryptoPassWord } from 'src/constants/crypto';
+import { statusUser } from 'src/constants/constant';
 import { UsersFillterDto } from './dto/user.filter.dto';
-import { DbConnection } from 'src/commons/dBConnection';
+import { DbConnection } from 'src/constants/dBConnection';
 
 @Injectable()
 export class UsersService {
