@@ -5,7 +5,7 @@ import { DbConnection } from 'src/constants/dBConnection';
 import {
   ConfigConditionPassSubject,
   ConfigConditionPassSubjectSchema,
-} from '../config-condition-pass/schemas/config.condition-pass.schema';
+} from '../config-condition/schemas/config-condition.subject-pass.schema';
 import {
   SubjectRegisters,
   SubjectRegisterSchema,

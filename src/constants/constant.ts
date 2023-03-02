@@ -53,3 +53,11 @@ export enum EtypeStatusSubjectStudy {
   PASS = 'PASS',
   FAILED = 'FAILED',
 }
+
+export enum EtypeLearningRate {
+  TEN_POINT_SCALE = 'TEN_POINT_SCALE',
+  FOUR_POINT_SCALE = 'FOUR_POINT_SCALE',
+  POINT_TRAINNING = 'POINT_TRAINNING',
+}
+
+export const trainningPointDefault = 60;
