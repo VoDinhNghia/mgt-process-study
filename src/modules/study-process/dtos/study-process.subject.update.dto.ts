@@ -8,5 +8,5 @@ export class UpdateStudySubjectProcessDto {
   finalScore?: number;
 
   @ApiProperty({ required: false, default: 0 })
-  essayCore?: number;
+  essayScore?: number;
 }

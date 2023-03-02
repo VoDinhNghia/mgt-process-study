@@ -9,13 +9,13 @@ export class ValidatePropertyGuard implements NestInterceptor {
     const {
       midtermScore,
       finalScore,
-      essayCore,
+      essayScore,
     }: UpdateStudySubjectProcessDto = request['body'];
-    if (!midtermScore && !finalScore && !essayCore) {
+    if (!midtermScore && !finalScore && !essayScore) {
       return of([
         new CommonException(
           400,
-          '[Format] - midtermScore finalScore essayCore must provided.',
+          '[Format] - midtermScore finalScore essayScore must provided.',
         ),
       ]);
     }
@@ -25,15 +25,17 @@ export class ValidatePropertyGuard implements NestInterceptor {
     const isFinalScore = finalScore
       ? finalScore <= 10 && finalScore >= 0
       : true;
-    const isEssayCore = essayCore ? essayCore <= 10 && essayCore >= 0 : true;
-    if (isMidtermScore && isFinalScore && isEssayCore) {
+    const isEssayScore = essayScore
+      ? essayScore <= 10 && essayScore >= 0
+      : true;
+    if (isMidtermScore && isFinalScore && isEssayScore) {
       return next.handle();
     }
 
     return of([
       new CommonException(
         400,
-        '[Format] - midtermScore or finalScore or essayCore must >= 0 and <= 10',
+        '[Format] - midtermScore or finalScore or essaySCore must >= 0 and <= 10',
       ),
     ]);
   }
