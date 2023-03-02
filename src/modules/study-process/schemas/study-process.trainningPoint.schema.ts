@@ -7,10 +7,10 @@ export type TranningPointsDocument = TranningPoints & Document;
 export class TranningPoints {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'studyprocess',
+    ref: 'profiles',
     required: true,
   })
-  studyprocess?: mongoose.Types.ObjectId;
+  user?: mongoose.Types.ObjectId;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -18,11 +18,11 @@ export class TranningPoints {
   })
   semester?: mongoose.Types.ObjectId;
 
-  @Prop()
-  program?: string;
-
-  @Prop()
-  point?: number;
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'volunteeprograms',
+  })
+  program?: mongoose.Types.ObjectId;
 
   @Prop({ default: Date.now })
   createdAt?: Date;

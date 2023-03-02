@@ -6,7 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { mongoUrl } from './configs/config';
 import { AuthModule } from './modules/auth/auth.module';
-import { ConfigConditionPassModule } from './modules/config-condition-pass/config-condition-pass.module';
+import { ConfigConditionModule } from './modules/config-condition/config-condition.module';
 import { StudyProcessModule } from './modules/study-process/study-process.module';
 import { UsersModule } from './modules/users/users.module';
 
@@ -19,7 +19,7 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
     AuthModule,
     StudyProcessModule,
-    ConfigConditionPassModule,
+    ConfigConditionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
