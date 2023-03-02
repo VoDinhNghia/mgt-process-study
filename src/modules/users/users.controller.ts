@@ -1,12 +1,12 @@
 import { Controller, UseGuards, Get, Res, Param, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { roleTypeAccessApi } from 'src/commons/constants';
+import { roleTypeAccessApi } from 'src/constants/constant';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
 import { UsersFillterDto } from './dto/user.filter.dto';
-import { ResponseRequest } from 'src/abstracts/responseApi';
+import { ResponseRequest } from 'src/utils/responseApi';
 
 @Controller('api/users')
 @ApiTags('users')

@@ -1,15 +1,15 @@
 import { Body, Controller, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ResponseRequest } from 'src/abstracts/responseApi';
+import { ResponseRequest } from 'src/utils/responseApi';
 import { Response } from 'express';
-import { roleTypeAccessApi } from 'src/commons/constants';
+import { roleTypeAccessApi } from 'src/constants/constant';
 import { StudyProcessService } from './study-process.service';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateStudySubjectProcessDto } from './dtos/study-process.subject.dto';
 import { Get, Param, UseInterceptors } from '@nestjs/common/decorators';
 import { UpdateStudySubjectProcessDto } from './dtos/study-process.subject.update.dto';
-import { ValidatePropertyGuard } from 'src/abstracts/validateUpdateSubjectRegister';
+import { ValidatePropertyGuard } from 'src/validates/validateUpdateSubjectRegister';
 
 @Controller('api/study-process')
 @ApiTags('study-process')
