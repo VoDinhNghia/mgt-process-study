@@ -1,6 +1,6 @@
 import { parse } from 'papaparse';
 
-export const getDataUpload = (data: any) => {
+export const getDataFromCsvFileUpload = (data: any) => {
   const csvData = [];
   parse(data, {
     header: true,
