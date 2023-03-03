@@ -17,6 +17,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { MgtTrainningPointService } from './mgt-trainning-point.service';
 import { readFileSync } from 'fs';
+import { csvFileFilter } from 'src/validates/validateUploadFileCSV';
+import { join } from 'path';
 
 @Controller('api/mgt-trainning-point')
 @ApiTags('mgt-trainning-point')
@@ -27,7 +29,25 @@ export class MgtTrainningPointController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
-  async importTrainingPoint(@Res() res: Response): Promise<ResponseRequest> {
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      fileFilter: csvFileFilter,
+      storage: diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, join(__dirname, '../..', '..', './src/files/imports'));
+        },
+        filename: (req, file, cb) => {
+          cb(null, file.originalname);
+        },
+      }),
+    }),
+  )
+  async importTrainingPoint(
+    @Body() body: StorageObjectDto,
+    @UploadedFile('file') file: Express.Multer.File,
+    @Res() res: Response,
+  ): Promise<ResponseRequest> {
     const result = true;
     return new ResponseRequest(res, result, 'Import trainning point success.');
   }
@@ -39,8 +59,14 @@ export class MgtTrainningPointController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileInterceptor('file', {
+      fileFilter: csvFileFilter,
       storage: diskStorage({
-        destination: './src/files/imports',
+        destination: (req, file, cb) => {
+          cb(null, join(__dirname, '../..', '..', './src/files/imports'));
+        },
+        filename: (req, file, cb) => {
+          cb(null, file.originalname);
+        },
       }),
     }),
   )
