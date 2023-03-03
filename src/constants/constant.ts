@@ -61,3 +61,8 @@ export enum EtypeLearningRate {
 }
 
 export const trainningPointDefault = 60;
+
+export enum EtypeVolunteeProgram {
+  UNIVERSITY = 'UNIVERSITY',
+  FACULTY = 'FACULTY',
+}
