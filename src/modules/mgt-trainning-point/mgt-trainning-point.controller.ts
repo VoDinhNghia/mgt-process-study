@@ -23,6 +23,7 @@ import {
 } from 'src/validates/validateUploadFileCSV';
 import { readFileSync } from 'fs';
 import { getDataFromCsvFileUpload } from 'src/utils/handleFileCsvUpload';
+import { Response } from 'express';
 
 @Controller('api/mgt-trainning-point')
 @ApiTags('mgt-trainning-point')
@@ -50,8 +51,7 @@ export class MgtTrainningPointController {
   ): Promise<ResponseRequest> {
     const rawData = readFileSync(file.path, 'utf8');
     const csvData = getDataFromCsvFileUpload(rawData);
-    console.log('data', csvData);
-    const result = true;
+    const result = await this.service.createTrainningPoint(csvData);
     return new ResponseRequest(res, result, 'Import trainning point success.');
   }
 
