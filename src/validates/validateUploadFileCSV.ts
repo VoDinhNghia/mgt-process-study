@@ -23,7 +23,6 @@ export const destinationSave = (
   file: Record<string, any>,
   cb: any,
 ) => {
-  console.log('__dirname', __dirname);
   cb(null, join(__dirname, '../..', './src/files/imports'));
 };
 

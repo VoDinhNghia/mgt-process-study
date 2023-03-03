@@ -16,12 +16,13 @@ import { StorageObjectDto } from 'src/utils/upload-file.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { MgtTrainningPointService } from './mgt-trainning-point.service';
-import { readFileSync } from 'fs';
 import {
   csvFileFilter,
   destinationSave,
   fileName,
 } from 'src/validates/validateUploadFileCSV';
+import { readFileSync } from 'fs';
+import { getDataUpload } from 'src/utils/handleFileCsvUpload';
 
 @Controller('api/mgt-trainning-point')
 @ApiTags('mgt-trainning-point')
@@ -70,8 +71,9 @@ export class MgtTrainningPointController {
     @Body() body: StorageObjectDto,
     @UploadedFile('file') file: Express.Multer.File,
   ): Promise<ResponseRequest> {
-    const data: any = readFileSync(file.path, 'utf8');
-    console.log('data', data);
+    const rawData = readFileSync(file.path, 'utf8');
+    const csvData = getDataUpload(rawData);
+    console.log('data', csvData);
     const result = true;
     return new ResponseRequest(res, result, 'Import voluntee program success.');
   }

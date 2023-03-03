@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { EtypeVolunteeProgram } from 'src/constants/constant';
 
 export type VolunteeProgramsDocument = VolunteePrograms & Document;
 
@@ -17,6 +18,9 @@ export class VolunteePrograms {
     required: true,
   })
   semester?: mongoose.Types.ObjectId;
+
+  @Prop({ default: EtypeVolunteeProgram.FACULTY })
+  type?: string;
 
   @Prop({
     required: true,
