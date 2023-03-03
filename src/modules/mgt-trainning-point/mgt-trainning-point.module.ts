@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { DbConnection } from 'src/constants/dBConnection';
 import { MgtTrainningPointController } from './mgt-trainning-point.controller';
 import { MgtTrainningPointService } from './mgt-trainning-point.service';
 import {
@@ -25,6 +26,6 @@ import {
     ]),
   ],
   controllers: [MgtTrainningPointController],
-  providers: [MgtTrainningPointService],
+  providers: [MgtTrainningPointService, DbConnection],
 })
 export class MgtTrainningPointModule {}

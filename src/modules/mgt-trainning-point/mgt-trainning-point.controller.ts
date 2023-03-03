@@ -22,7 +22,7 @@ import {
   fileName,
 } from 'src/validates/validateUploadFileCSV';
 import { readFileSync } from 'fs';
-import { getDataUpload } from 'src/utils/handleFileCsvUpload';
+import { getDataFromCsvFileUpload } from 'src/utils/handleFileCsvUpload';
 
 @Controller('api/mgt-trainning-point')
 @ApiTags('mgt-trainning-point')
@@ -48,6 +48,9 @@ export class MgtTrainningPointController {
     @UploadedFile('file') file: Express.Multer.File,
     @Res() res: Response,
   ): Promise<ResponseRequest> {
+    const rawData = readFileSync(file.path, 'utf8');
+    const csvData = getDataFromCsvFileUpload(rawData);
+    console.log('data', csvData);
     const result = true;
     return new ResponseRequest(res, result, 'Import trainning point success.');
   }
@@ -72,9 +75,8 @@ export class MgtTrainningPointController {
     @UploadedFile('file') file: Express.Multer.File,
   ): Promise<ResponseRequest> {
     const rawData = readFileSync(file.path, 'utf8');
-    const csvData = getDataUpload(rawData);
-    console.log('data', csvData);
-    const result = true;
+    const csvData = getDataFromCsvFileUpload(rawData);
+    const result = await this.service.importMultiVolunteeProgram(csvData);
     return new ResponseRequest(res, result, 'Import voluntee program success.');
   }
 }
