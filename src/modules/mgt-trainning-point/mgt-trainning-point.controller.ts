@@ -17,8 +17,11 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { MgtTrainningPointService } from './mgt-trainning-point.service';
 import { readFileSync } from 'fs';
-import { csvFileFilter } from 'src/validates/validateUploadFileCSV';
-import { join } from 'path';
+import {
+  csvFileFilter,
+  destinationSave,
+  fileName,
+} from 'src/validates/validateUploadFileCSV';
 
 @Controller('api/mgt-trainning-point')
 @ApiTags('mgt-trainning-point')
@@ -34,12 +37,8 @@ export class MgtTrainningPointController {
     FileInterceptor('file', {
       fileFilter: csvFileFilter,
       storage: diskStorage({
-        destination: (req, file, cb) => {
-          cb(null, join(__dirname, '../..', '..', './src/files/imports'));
-        },
-        filename: (req, file, cb) => {
-          cb(null, file.originalname);
-        },
+        destination: destinationSave,
+        filename: fileName,
       }),
     }),
   )
@@ -61,12 +60,8 @@ export class MgtTrainningPointController {
     FileInterceptor('file', {
       fileFilter: csvFileFilter,
       storage: diskStorage({
-        destination: (req, file, cb) => {
-          cb(null, join(__dirname, '../..', '..', './src/files/imports'));
-        },
-        filename: (req, file, cb) => {
-          cb(null, file.originalname);
-        },
+        destination: destinationSave,
+        filename: fileName,
       }),
     }),
   )
