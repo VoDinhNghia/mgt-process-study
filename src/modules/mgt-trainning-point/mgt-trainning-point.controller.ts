@@ -10,7 +10,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { diskStorage } from 'multer';
-import { roleTypeAccessApi } from 'src/constants/constant';
+import { ErolesUser } from 'src/constants/constant';
 import { ResponseRequest } from 'src/utils/responseApi';
 import { StorageObjectDto } from 'src/utils/upload-file.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -33,7 +33,7 @@ export class MgtTrainningPointController {
   @Post('/import/training-point')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -58,7 +58,7 @@ export class MgtTrainningPointController {
   @Post('/import/voluntee-program')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileInterceptor('file', {

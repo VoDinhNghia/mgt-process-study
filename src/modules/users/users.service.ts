@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Types } from 'mongoose';
 import { cryptoPassWord } from 'src/constants/crypto';
-import { statusUser } from 'src/constants/constant';
+import { EstatusUser } from 'src/constants/constant';
 import { UsersFillterDto } from './dto/user.filter.dto';
 import { DbConnection } from 'src/constants/dBConnection';
 
@@ -14,7 +14,7 @@ export class UsersService {
     const result = await this.db.collection('users').findOne({
       email,
       passWord: password,
-      status: statusUser.ACTIVE,
+      status: EstatusUser.ACTIVE,
     });
     return result;
   }

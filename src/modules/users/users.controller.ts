@@ -1,7 +1,7 @@
 import { Controller, UseGuards, Get, Res, Param, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { roleTypeAccessApi } from 'src/constants/constant';
+import { ErolesUser } from 'src/constants/constant';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Response } from 'express';
@@ -16,7 +16,9 @@ export class UsersController {
   @Get()
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.FULL))
+  @UseGuards(
+    RoleGuard([ErolesUser.ADMIN, ErolesUser.STUDENT, ErolesUser.LECTURER]),
+  )
   async getAllUsers(
     @Query() usersFillterDto: UsersFillterDto,
     @Res() res: Response,
@@ -28,7 +30,9 @@ export class UsersController {
   @Get('/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(
+    RoleGuard([ErolesUser.ADMIN, ErolesUser.LECTURER, ErolesUser.STUDENT]),
+  )
   async getUserByid(
     @Param('id') id: string,
     @Res() res: Response,
