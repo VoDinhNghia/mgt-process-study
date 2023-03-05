@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ResponseRequest } from 'src/utils/responseApi';
-import { roleTypeAccessApi } from 'src/constants/constant';
+import { ErolesUser } from 'src/constants/constant';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { ConfigConditionService } from './config-condition.service';
@@ -29,7 +29,7 @@ export class ConfigConditionController {
   @Post('/subject-pass')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async createConfigSubjectPass(
     @Body() configDto: CreateConfigConditionSubjectDto,
     @Res() res: Response,
@@ -41,7 +41,7 @@ export class ConfigConditionController {
   @Post('/learning-rating')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async createConfigLearningRating(
     @Body() configLearningRatingDto: CreateConfigLearningRatingDto,
     @Res() res: Response,
@@ -59,7 +59,7 @@ export class ConfigConditionController {
   @Put('/subject-pass/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async updateConfigSubjectPass(
     @Param('id') id: string,
     @Body() configDto: UpdateConfigConditionSubjectDto,
@@ -75,7 +75,7 @@ export class ConfigConditionController {
   @Put('/learning-rating/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async updateConfigLearningRating(
     @Param('id') id: string,
     @Body() configLearningRatingDto: UpdateConfigLearningRatingDto,
@@ -95,7 +95,7 @@ export class ConfigConditionController {
   @Delete('/subject-pass/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async deleteConfigSubjectPass(
     @Param('id') id: string,
     @Res() res: Response,
@@ -107,7 +107,7 @@ export class ConfigConditionController {
   @Delete('/learning-rating/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async deleteConfigLearningRating(
     @Param('id') id: string,
     @Res() res: Response,
@@ -123,7 +123,7 @@ export class ConfigConditionController {
   @Get('/subject-pass')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async getAllConfigSubjectPass(
     @Res() res: Response,
   ): Promise<ResponseRequest> {
@@ -134,7 +134,7 @@ export class ConfigConditionController {
   @Get('/learning-rating')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async getAllConfigLearningRating(
     @Res() res: Response,
   ): Promise<ResponseRequest> {
@@ -149,7 +149,7 @@ export class ConfigConditionController {
   @Get('/subject-pass/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async getConfigSubjectPassById(
     @Param('id') id: string,
     @Res() res: Response,
@@ -161,7 +161,7 @@ export class ConfigConditionController {
   @Get('/learning-rating/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.ADMIN))
+  @UseGuards(RoleGuard([ErolesUser.ADMIN]))
   async getConfigLearningRatingById(
     @Param('id') id: string,
     @Res() res: Response,

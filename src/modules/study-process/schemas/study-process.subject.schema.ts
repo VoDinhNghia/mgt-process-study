@@ -23,6 +23,9 @@ export class SubjectRegisters {
   statusRegister?: boolean; // true: register success.
 
   @Prop()
+  tuition?: number;
+
+  @Prop()
   midtermScore?: number;
 
   @Prop()

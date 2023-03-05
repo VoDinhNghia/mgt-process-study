@@ -2,7 +2,7 @@ import { Body, Controller, Post, Put, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ResponseRequest } from 'src/utils/responseApi';
 import { Response } from 'express';
-import { roleTypeAccessApi } from 'src/constants/constant';
+import { ErolesUser } from 'src/constants/constant';
 import { StudyProcessService } from './study-process.service';
 import { RoleGuard } from '../auth/role-auth.guard';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -19,7 +19,9 @@ export class StudyProcessController {
   @Post('/subject-register')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.FULL))
+  @UseGuards(
+    RoleGuard([ErolesUser.ADMIN, ErolesUser.LECTURER, ErolesUser.STUDENT]),
+  )
   async createSubjectRegister(
     @Body() subjectRegisterDto: CreateStudySubjectProcessDto,
     @Res() res: Response,
@@ -31,7 +33,7 @@ export class StudyProcessController {
   @Put('/subject-register/update-point/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.LECTURER))
+  @UseGuards(RoleGuard([ErolesUser.LECTURER]))
   @UseInterceptors(ValidatePropertyGuard)
   async updateSubjectPoint(
     @Param('id') id: string,
@@ -45,7 +47,9 @@ export class StudyProcessController {
   @Get('/subject-register/:id')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @UseGuards(RoleGuard(roleTypeAccessApi.FULL))
+  @UseGuards(
+    RoleGuard([ErolesUser.ADMIN, ErolesUser.LECTURER, ErolesUser.STUDENT]),
+  )
   async getSubjectRegisterById(
     @Param('id') id: string,
     @Res() res: Response,
