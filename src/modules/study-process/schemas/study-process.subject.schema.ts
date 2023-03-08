@@ -19,11 +19,11 @@ export class SubjectRegisters {
   })
   studyprocess?: mongoose.Types.ObjectId;
 
-  @Prop()
+  @Prop({ default: true })
   statusRegister?: boolean; // true: register success.
 
-  @Prop()
-  tuition?: number;
+  // @Prop()
+  // tuition?: number;
 
   @Prop()
   midtermScore?: number;

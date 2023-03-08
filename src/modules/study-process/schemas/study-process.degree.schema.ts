@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { EtypeDegree } from 'src/constants/constant';
 
 export type DegreeManagementDocument = DegreeManagement & Document;
 
@@ -16,15 +17,15 @@ export class DegreeManagement {
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'users',
+    ref: 'profiles',
   })
   user?: mongoose.Types.ObjectId;
 
   @Prop()
   year?: string; // 2016 - 2020
 
-  @Prop()
-  type?: string; // Kha, Gioi,...
+  @Prop({ default: EtypeDegree.PRETTY })
+  type?: string;
 
   @Prop()
   recognitionDate?: Date;
