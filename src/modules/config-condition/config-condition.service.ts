@@ -7,26 +7,26 @@ import { CreateConfigConditionSubjectDto } from './dtos/config-condition.create.
 import { UpdateConfigLearningRatingDto } from './dtos/config-condition.update.learning-rating.dto';
 import { UpdateConfigConditionSubjectDto } from './dtos/config-condition.update.subject-pass.dto';
 import {
-  ConfigConditionLearningRating,
+  Config_Condition_Learning_Rating,
   ConfigConditionLearningRatingDocument,
 } from './schemas/config-condition.learning-rating.schema';
 import {
-  ConfigConditionPassSubject,
+  Config_Condition_Pass_Subject,
   ConfigConditionPassSubjectDocument,
 } from './schemas/config-condition.subject-pass.schema';
 
 @Injectable()
 export class ConfigConditionService {
   constructor(
-    @InjectModel(ConfigConditionPassSubject.name)
+    @InjectModel(Config_Condition_Pass_Subject.name)
     private readonly subjectSettingSchema: Model<ConfigConditionPassSubjectDocument>,
-    @InjectModel(ConfigConditionLearningRating.name)
+    @InjectModel(Config_Condition_Learning_Rating.name)
     private readonly learningRatingSchema: Model<ConfigConditionLearningRatingDocument>,
   ) {}
 
   async createConfigConditionSubject(
     configDto: CreateConfigConditionSubjectDto,
-  ): Promise<ConfigConditionPassSubject> {
+  ): Promise<Config_Condition_Pass_Subject> {
     const result = await new this.subjectSettingSchema(configDto).save();
     return result;
   }
@@ -34,7 +34,7 @@ export class ConfigConditionService {
   async updateConfigConditionSubject(
     id: string,
     configDto: UpdateConfigConditionSubjectDto,
-  ): Promise<ConfigConditionPassSubject> {
+  ): Promise<Config_Condition_Pass_Subject> {
     await this.subjectSettingSchema.findByIdAndUpdate(id, configDto);
     const result = await this.findConfigConditionSubjectById(id);
     return result;
@@ -42,7 +42,7 @@ export class ConfigConditionService {
 
   async findConfigConditionSubjectById(
     id: string,
-  ): Promise<ConfigConditionPassSubject> {
+  ): Promise<Config_Condition_Pass_Subject> {
     const result = await this.subjectSettingSchema.findById(id);
     if (!result) {
       new CommonException(404, 'Config not found.');
@@ -50,7 +50,9 @@ export class ConfigConditionService {
     return result;
   }
 
-  async findAllConfigCondionSubjects(): Promise<ConfigConditionPassSubject[]> {
+  async findAllConfigCondionSubjects(): Promise<
+    Config_Condition_Pass_Subject[]
+  > {
     const results = await this.subjectSettingSchema.find({});
     return results;
   }
@@ -62,7 +64,7 @@ export class ConfigConditionService {
 
   async createConfigLearningRating(
     configDto: CreateConfigLearningRatingDto,
-  ): Promise<ConfigConditionLearningRating> {
+  ): Promise<Config_Condition_Learning_Rating> {
     const result = await new this.learningRatingSchema(configDto).save();
     return result;
   }
@@ -70,7 +72,7 @@ export class ConfigConditionService {
   async updateConfigLearningRating(
     id: string,
     configDto: UpdateConfigLearningRatingDto,
-  ): Promise<ConfigConditionLearningRating> {
+  ): Promise<Config_Condition_Learning_Rating> {
     await this.learningRatingSchema.findByIdAndUpdate(id, configDto);
     const result = await this.findConfigConditionSubjectById(id);
     return result;
@@ -78,7 +80,7 @@ export class ConfigConditionService {
 
   async findConfigLearningRatingById(
     id: string,
-  ): Promise<ConfigConditionLearningRating> {
+  ): Promise<Config_Condition_Learning_Rating> {
     const result = await this.learningRatingSchema.findById(id);
     if (!result) {
       new CommonException(404, 'Config learning rating not found.');
@@ -87,7 +89,7 @@ export class ConfigConditionService {
   }
 
   async findAllConfigLearningRatings(): Promise<
-    ConfigConditionLearningRating[]
+    Config_Condition_Learning_Rating[]
   > {
     const results = await this.learningRatingSchema.find({});
     return results;

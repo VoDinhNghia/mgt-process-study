@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
+import { FieldsCommonSchema } from 'src/utils/fields.common.schema';
 
-export type TranningPointsDocument = TranningPoints & Document;
+export type TranningPointsDocument = Trainning_Points & Document; // nho update ben BE cho scholarship
 
 @Schema()
-export class TranningPoints {
+export class Trainning_Points extends FieldsCommonSchema {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'profiles',
@@ -20,7 +22,7 @@ export class TranningPoints {
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'volunteeprograms',
+    ref: 'voluntee_programs',
   })
   program?: mongoose.Types.ObjectId;
 
@@ -29,12 +31,7 @@ export class TranningPoints {
 
   @Prop()
   attendance?: Date;
-
-  @Prop({ default: Date.now })
-  createdAt?: Date;
-
-  @Prop({ default: Date.now })
-  updateAt?: Date;
 }
 
-export const TranningPointSchema = SchemaFactory.createForClass(TranningPoints);
+export const TranningPointSchema =
+  SchemaFactory.createForClass(Trainning_Points);

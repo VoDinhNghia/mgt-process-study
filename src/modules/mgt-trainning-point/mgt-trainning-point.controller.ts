@@ -13,8 +13,8 @@ import { diskStorage } from 'multer';
 import { ErolesUser } from 'src/constants/constant';
 import { ResponseRequest } from 'src/utils/responseApi';
 import { StorageObjectDto } from 'src/utils/upload-file.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RoleGuard } from '../auth/role-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RoleGuard } from '../auth/guards/role-auth.guard';
 import { MgtTrainningPointService } from './mgt-trainning-point.service';
 import {
   csvFileFilter,

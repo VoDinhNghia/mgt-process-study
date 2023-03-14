@@ -4,20 +4,20 @@ import { Model, Types } from 'mongoose';
 import { EtypeVolunteeProgram } from 'src/constants/constant';
 import { DbConnection } from 'src/constants/dBConnection';
 import {
-  TranningPoints,
+  Trainning_Points,
   TranningPointsDocument,
 } from './schemas/study-process.trainningPoint.schema';
 import {
-  VolunteePrograms,
+  Voluntee_Programs,
   VolunteeProgramsDocument,
 } from './schemas/study-process.voluntee-program.schema';
 
 @Injectable()
 export class MgtTrainningPointService {
   constructor(
-    @InjectModel(TranningPoints.name)
+    @InjectModel(Trainning_Points.name)
     private readonly trainningPointSchema: Model<TranningPointsDocument>,
-    @InjectModel(VolunteePrograms.name)
+    @InjectModel(Voluntee_Programs.name)
     private readonly volunteeProgramSchema: Model<VolunteeProgramsDocument>,
     private readonly db: DbConnection,
   ) {}
