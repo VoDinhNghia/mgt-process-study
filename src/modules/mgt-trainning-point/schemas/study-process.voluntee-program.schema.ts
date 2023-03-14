@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { EtypeVolunteeProgram } from 'src/constants/constant';
+import { FieldsCommonSchema } from 'src/utils/fields.common.schema';
 
-export type VolunteeProgramsDocument = VolunteePrograms & Document;
+export type VolunteeProgramsDocument = Voluntee_Programs & Document;
 
 @Schema()
-export class VolunteePrograms {
+export class Voluntee_Programs extends FieldsCommonSchema {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'faculties',
@@ -64,13 +66,7 @@ export class VolunteePrograms {
     leader?: mongoose.Types.ObjectId;
     secretary?: mongoose.Types.ObjectId;
   };
-
-  @Prop({ default: Date.now })
-  createdAt?: Date;
-
-  @Prop({ default: Date.now })
-  updateAt?: Date;
 }
 
 export const VolunteeProgramsSchema =
-  SchemaFactory.createForClass(VolunteePrograms);
+  SchemaFactory.createForClass(Voluntee_Programs);

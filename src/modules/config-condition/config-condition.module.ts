@@ -3,11 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigConditionController } from './config-condition.controller';
 import { ConfigConditionService } from './config-condition.service';
 import {
-  ConfigConditionLearningRating,
+  Config_Condition_Learning_Rating,
   ConfigConditionLearningRatingSchema,
 } from './schemas/config-condition.learning-rating.schema';
 import {
-  ConfigConditionPassSubject,
+  Config_Condition_Pass_Subject,
   ConfigConditionPassSubjectSchema,
 } from './schemas/config-condition.subject-pass.schema';
 
@@ -15,11 +15,11 @@ import {
   imports: [
     MongooseModule.forFeature([
       {
-        name: ConfigConditionPassSubject.name,
+        name: Config_Condition_Pass_Subject.name,
         schema: ConfigConditionPassSubjectSchema,
       },
       {
-        name: ConfigConditionLearningRating.name,
+        name: Config_Condition_Learning_Rating.name,
         schema: ConfigConditionLearningRatingSchema,
       },
     ]),

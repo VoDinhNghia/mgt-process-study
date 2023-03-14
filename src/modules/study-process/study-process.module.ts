@@ -3,11 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ValidateField } from 'src/validates/validateFieldById';
 import { DbConnection } from 'src/constants/dBConnection';
 import {
-  ConfigConditionPassSubject,
+  Config_Condition_Pass_Subject,
   ConfigConditionPassSubjectSchema,
 } from '../config-condition/schemas/config-condition.subject-pass.schema';
 import {
-  SubjectRegisters,
+  Subject_Registers,
   SubjectRegisterSchema,
 } from './schemas/study-process.subject.schema';
 import { StudyProcessController } from './study-process.controller';
@@ -16,9 +16,9 @@ import { StudyProcessService } from './study-process.service';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: SubjectRegisters.name, schema: SubjectRegisterSchema },
+      { name: Subject_Registers.name, schema: SubjectRegisterSchema },
       {
-        name: ConfigConditionPassSubject.name,
+        name: Config_Condition_Pass_Subject.name,
         schema: ConfigConditionPassSubjectSchema,
       },
     ]),

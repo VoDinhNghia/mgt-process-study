@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EtypeLearningRate } from 'src/constants/constant';
+import { FieldsCommonSchema } from 'src/utils/fields.common.schema';
 
 export type ConfigConditionLearningRatingDocument =
-  ConfigConditionLearningRating & Document;
+  Config_Condition_Learning_Rating & Document;
 
 @Schema()
-export class ConfigConditionLearningRating {
+export class Config_Condition_Learning_Rating extends FieldsCommonSchema {
   @Prop({
     type: String,
     required: true,
@@ -25,14 +27,8 @@ export class ConfigConditionLearningRating {
 
   @Prop({ default: 7.9 })
   maximum?: number;
-
-  @Prop({ default: Date.now })
-  createdAt?: Date;
-
-  @Prop({ default: Date.now })
-  updateAt?: Date;
 }
 
 export const ConfigConditionLearningRatingSchema = SchemaFactory.createForClass(
-  ConfigConditionLearningRating,
+  Config_Condition_Learning_Rating,
 );

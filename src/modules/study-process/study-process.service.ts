@@ -9,22 +9,22 @@ import {
 } from 'src/constants/constant';
 import { DbConnection } from 'src/constants/dBConnection';
 import {
-  ConfigConditionPassSubject,
+  Config_Condition_Pass_Subject,
   ConfigConditionPassSubjectDocument,
 } from '../config-condition/schemas/config-condition.subject-pass.schema';
 import { CreateStudySubjectProcessDto } from './dtos/study-process.subject.dto';
 import { UpdateStudySubjectProcessDto } from './dtos/study-process.subject.update.dto';
 import {
   SubjectRegisterDocument,
-  SubjectRegisters,
+  Subject_Registers,
 } from './schemas/study-process.subject.schema';
 
 @Injectable()
 export class StudyProcessService {
   constructor(
-    @InjectModel(SubjectRegisters.name)
+    @InjectModel(Subject_Registers.name)
     private readonly subjectSchema: Model<SubjectRegisterDocument>,
-    @InjectModel(ConfigConditionPassSubject.name)
+    @InjectModel(Config_Condition_Pass_Subject.name)
     private readonly configSchema: Model<ConfigConditionPassSubjectDocument>,
     private readonly db: DbConnection,
     private readonly validate: ValidateField,
@@ -32,7 +32,7 @@ export class StudyProcessService {
 
   async createSubjectRegister(
     subjectDto: CreateStudySubjectProcessDto,
-  ): Promise<SubjectRegisters> {
+  ): Promise<Subject_Registers> {
     const { subject, studyprocess } = subjectDto;
     const studyProcess = await this.db
       .collection('studyprocesses')
@@ -49,7 +49,7 @@ export class StudyProcessService {
   async updatePointSubject(
     id: string,
     subjectDto: UpdateStudySubjectProcessDto,
-  ): Promise<SubjectRegisters> {
+  ): Promise<Subject_Registers> {
     const subjectRegister = await this.subjectSchema.findById(id);
     if (!subjectRegister) {
       new CommonException(404, 'Subject register not found.');
@@ -101,7 +101,7 @@ export class StudyProcessService {
     return result.condition;
   }
 
-  async findSubjectRegisterById(id: string): Promise<SubjectRegisters> {
+  async findSubjectRegisterById(id: string): Promise<Subject_Registers> {
     const agg = [{ $match: { _id: new Types.ObjectId(id) } }];
     const aggregate = this.lookupCommon(agg);
     const result = await this.subjectSchema.aggregate(aggregate);

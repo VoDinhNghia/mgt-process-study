@@ -12,8 +12,8 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ResponseRequest } from 'src/utils/responseApi';
 import { ErolesUser } from 'src/constants/constant';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { RoleGuard } from '../auth/role-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RoleGuard } from '../auth/guards/role-auth.guard';
 import { ConfigConditionService } from './config-condition.service';
 import { CreateConfigConditionSubjectDto } from './dtos/config-condition.create.subject-pass.dto';
 import { Response } from 'express';

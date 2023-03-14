@@ -9,7 +9,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConfigConditionModule } from './modules/config-condition/config-condition.module';
 import { MgtTrainningPointModule } from './modules/mgt-trainning-point/mgt-trainning-point.module';
 import { StudyProcessModule } from './modules/study-process/study-process.module';
-import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -17,7 +16,6 @@ import { UsersModule } from './modules/users/users.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'src/public'),
     }),
-    UsersModule,
     AuthModule,
     StudyProcessModule,
     ConfigConditionModule,

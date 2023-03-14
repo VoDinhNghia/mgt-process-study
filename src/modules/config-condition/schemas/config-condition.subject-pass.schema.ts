@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { EtypeConfigCoditionPassSubject } from 'src/constants/constant';
+import { FieldsCommonSchema } from 'src/utils/fields.common.schema';
 
-export type ConfigConditionPassSubjectDocument = ConfigConditionPassSubject &
+export type ConfigConditionPassSubjectDocument = Config_Condition_Pass_Subject &
   Document;
 
 @Schema()
-export class ConfigConditionPassSubject {
+export class Config_Condition_Pass_Subject extends FieldsCommonSchema {
   @Prop({
     type: String,
     required: true,
@@ -21,14 +23,8 @@ export class ConfigConditionPassSubject {
 
   @Prop({ default: 4.0 }) // >= condition => pass else failed
   condition?: number;
-
-  @Prop({ default: Date.now })
-  createdAt?: Date;
-
-  @Prop({ default: Date.now })
-  updateAt?: Date;
 }
 
 export const ConfigConditionPassSubjectSchema = SchemaFactory.createForClass(
-  ConfigConditionPassSubject,
+  Config_Condition_Pass_Subject,
 );

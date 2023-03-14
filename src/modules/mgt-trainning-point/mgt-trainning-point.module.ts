@@ -4,11 +4,11 @@ import { DbConnection } from 'src/constants/dBConnection';
 import { MgtTrainningPointController } from './mgt-trainning-point.controller';
 import { MgtTrainningPointService } from './mgt-trainning-point.service';
 import {
-  TranningPoints,
+  Trainning_Points,
   TranningPointSchema,
 } from './schemas/study-process.trainningPoint.schema';
 import {
-  VolunteePrograms,
+  Voluntee_Programs,
   VolunteeProgramsSchema,
 } from './schemas/study-process.voluntee-program.schema';
 
@@ -16,11 +16,11 @@ import {
   imports: [
     MongooseModule.forFeature([
       {
-        name: TranningPoints.name,
+        name: Trainning_Points.name,
         schema: TranningPointSchema,
       },
       {
-        name: VolunteePrograms.name,
+        name: Voluntee_Programs.name,
         schema: VolunteeProgramsSchema,
       },
     ]),
