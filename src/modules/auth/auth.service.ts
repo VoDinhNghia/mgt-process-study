@@ -1,10 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CommonException } from 'src/exceptions/execeptionError';
-import { cryptoPassWord } from 'src/constants/crypto';
-import { DbConnection } from 'src/constants/dBConnection';
+import { CommonException } from 'src/exceptions/execeptions.common-error';
+import { cryptoPassWord } from 'src/constants/constants.crypto';
+import { DbConnection } from 'src/constants/constants.dB.mongo.connection';
 import { EstatusUser } from 'src/constants/constant';
-import { LookupCommon } from 'src/utils/lookup.aggregate-query';
+import { LoginDto } from './dtos/auth.login.dto';
+import { authMsg } from 'src/constants/constants.message.response';
+import { UserLoginResponseDto } from './dtos/auth.result.login-service.dto';
+import { userLookup } from 'src/utils/utils.lookup-query.service';
+import { ImatchAuth, ImatchGetMe } from './interfaces/auth.interface';
+import { collections } from 'src/constants/constants.collections.name';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class AuthService {
@@ -13,38 +19,30 @@ export class AuthService {
     private readonly db: DbConnection,
   ) {}
 
-  async login(userDto: Record<string, any>) {
-    const { email, passWord } = userDto;
+  async login(loginDto: LoginDto): Promise<UserLoginResponseDto> {
+    const { email, passWord } = loginDto;
     const user = await this.findUserAuth(email, passWord);
     if (!user) {
-      new CommonException(401, `User or password incorrect.`);
+      new CommonException(401, authMsg.errorAuth);
     }
-    const payload = {
+    const result = {
       ...user,
       statusLogin: true,
+      accessToken: this.jwtService.sign({ ...user }),
     };
-    return {
-      ...payload,
-      historyLogin: user.historyLogin,
-      accessToken: this.jwtService.sign(payload),
-    };
+    return result;
   }
 
-  async findUserAuth(email: string, passWord: string): Promise<any> {
+  async findUserAuth(
+    email: string,
+    passWord: string,
+  ): Promise<UserLoginResponseDto> {
     const password = cryptoPassWord(passWord);
-    const match: Record<string, any> = {
+    const match: ImatchAuth = {
       $match: { email, passWord: password, status: EstatusUser.ACTIVE },
     };
-    const lookup: any = new LookupCommon([
-      {
-        from: 'profiles',
-        localField: '_id',
-        foreignField: 'user',
-        as: 'profile',
-        unwind: true,
-      },
-    ]);
-    const project: Record<string, any>[] = [
+    const lookup = userLookup();
+    const project = [
       {
         $project: {
           _id: 1,
@@ -59,7 +57,20 @@ export class AuthService {
       },
     ];
     const aggregate = [match, ...lookup, ...project];
-    const cursorAgg = await this.db.collection('users').aggregate(aggregate);
+    const cursorAgg = await this.db
+      .collection(collections.users)
+      .aggregate(aggregate);
+    const result = await cursorAgg.toArray();
+    return result[0] ?? null;
+  }
+
+  async getMe(profileId: string): Promise<UserLoginResponseDto> {
+    const match: ImatchGetMe = { _id: new Types.ObjectId(profileId) };
+    const lookup = userLookup();
+    const aggregate = [match, ...lookup];
+    const cursorAgg = await this.db
+      .collection(collections.users)
+      .aggregate(aggregate);
     const result = await cursorAgg.toArray();
     return result[0] ?? null;
   }

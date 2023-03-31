@@ -1,19 +1,24 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalStrategy } from './guards/local.strategy';
+import { LocalStrategy } from './guards/auth.local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
-import { jwtConstants } from './guards/constants';
-import { JwtStrategy } from './guards/jwt.strategy';
-import { DbConnection } from 'src/constants/dBConnection';
+import { jwtConstants } from './guards/auth.constants';
+import { JwtStrategy } from './guards/auth.jwt.strategy';
+import { DbConnection } from 'src/constants/constants.dB.mongo.connection';
 import { AuthController } from './auth.controller';
+import { expiresInJwt } from 'src/constants/constant';
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '7d' },
+      privateKey: jwtConstants.JWT_PRIVATE_KEY,
+      publicKey: jwtConstants.JWT_PUBLIC_KEY,
+      signOptions: {
+        expiresIn: expiresInJwt,
+        algorithm: 'HS512',
+      },
     }),
   ],
   providers: [AuthService, LocalStrategy, JwtStrategy, DbConnection],

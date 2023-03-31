@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { FieldsCommonSchema } from 'src/utils/fields.common.schema';
+import { FieldsCommonSchema } from 'src/utils/utils.fields.common.schema';
 
 export type SubjectRegisterDocument = Subject_Registers & Document;
 

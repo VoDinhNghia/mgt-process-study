@@ -56,3 +56,5 @@ export enum EtypeDegree {
   GOOD = 'GOOD',
   EXCELLENT = 'EXCELLENT',
 }
+
+export const expiresInJwt = '7d';

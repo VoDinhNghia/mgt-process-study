@@ -10,12 +10,15 @@ import {
 import { Request, Response } from 'express';
 import { AuthService } from '../auth/auth.service';
 import { LoginDto } from '../auth/dtos/auth.login.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from './guards/auth.jwt-auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ResponseRequest } from '../../utils/responseApi';
+import { ResponseRequest } from '../../utils/utils.response-api';
+import { authController } from 'src/constants/constants.controller.name-tag';
+import { authMsg } from 'src/constants/constants.message.response';
+import { UserLoginResponseDto } from './dtos/auth.result.login-service.dto';
 
-@Controller('api/auth')
-@ApiTags('auth')
+@Controller(authController.name)
+@ApiTags(authController.tag)
 export class AuthController {
   constructor(private authService: AuthService) {}
 
@@ -25,14 +28,16 @@ export class AuthController {
     @Res() res: Response,
   ): Promise<ResponseRequest> {
     const result = await this.authService.login(loginDto);
-    return new ResponseRequest(res, result, `Login sucess.`);
+    return new ResponseRequest(res, result, authMsg.login);
   }
 
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Get('/me')
-  getProfile(@Req() req: Request, @Res() res: Response) {
-    const { user } = req;
-    return new ResponseRequest(res, user, `Get me success.`);
+  async getProfile(@Req() req: Request, @Res() res: Response) {
+    const user: UserLoginResponseDto = req?.user;
+    const profileId: string = user?.profileId;
+    const result = await this.authService.getMe(profileId);
+    return new ResponseRequest(res, result, authMsg.getMe);
   }
 }
