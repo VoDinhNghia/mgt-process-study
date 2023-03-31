@@ -1,30 +1,33 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable class-methods-use-this */
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, ObjectId, Types } from 'mongoose';
-import { CommonException } from 'src/exceptions/execeptionError';
-import { ValidateField } from 'src/validates/validateFieldById';
+import { CommonException } from 'src/exceptions/execeptions.common-error';
+import { ValidateField } from 'src/validates/validates.fields-id.dto';
 import {
   EtypeConfigCoditionPassSubject,
   EtypeStatusSubjectStudy,
 } from 'src/constants/constant';
-import { DbConnection } from 'src/constants/dBConnection';
-import {
-  Config_Condition_Pass_Subject,
-  ConfigConditionPassSubjectDocument,
-} from '../config-condition/schemas/config-condition.subject-pass.schema';
+import { DbConnection } from 'src/constants/constants.dB.mongo.connection';
 import { CreateStudySubjectProcessDto } from './dtos/study-process.subject.dto';
 import { UpdateStudySubjectProcessDto } from './dtos/study-process.subject.update.dto';
 import {
   SubjectRegisterDocument,
   Subject_Registers,
 } from './schemas/study-process.subject.schema';
+import {
+  ConfigConditionPassSubject,
+  ConfigConditionPassSubjectDocument,
+} from '../configs/schemas/configs.subject-pass.schema';
+import { collections } from 'src/constants/constants.collections.name';
 
 @Injectable()
 export class StudyProcessService {
   constructor(
     @InjectModel(Subject_Registers.name)
     private readonly subjectSchema: Model<SubjectRegisterDocument>,
-    @InjectModel(Config_Condition_Pass_Subject.name)
+    @InjectModel(ConfigConditionPassSubject.name)
     private readonly configSchema: Model<ConfigConditionPassSubjectDocument>,
     private readonly db: DbConnection,
     private readonly validate: ValidateField,
@@ -35,7 +38,7 @@ export class StudyProcessService {
   ): Promise<Subject_Registers> {
     const { subject, studyprocess } = subjectDto;
     const studyProcess = await this.db
-      .collection('studyprocesses')
+      .collection(collections.study_processes)
       .findOne({ _id: new Types.ObjectId(studyprocess) });
     if (!studyProcess) {
       new CommonException(404, 'User study process not found.');
@@ -103,7 +106,7 @@ export class StudyProcessService {
 
   async findSubjectRegisterById(id: string): Promise<Subject_Registers> {
     const agg = [{ $match: { _id: new Types.ObjectId(id) } }];
-    const aggregate = this.lookupCommon(agg);
+    const aggregate: any = this.lookupCommon(agg);
     const result = await this.subjectSchema.aggregate(aggregate);
     if (!result[0]) {
       new CommonException(404, 'Subject register not found.');
@@ -115,11 +118,11 @@ export class StudyProcessService {
     subjectId: ObjectId | any,
     subjectPointsDto: UpdateStudySubjectProcessDto,
   ): Promise<number> {
-    const cursorAgg = await this.db.collection('subjects').aggregate([
+    const cursorAgg = await this.db.collection(collections.subjects).aggregate([
       { $match: { _id: subjectId } },
       {
         $lookup: {
-          from: 'subjectprocesses',
+          from: collections.subject_processes,
           localField: '_id',
           foreignField: 'subject',
           as: 'process',
@@ -155,7 +158,7 @@ export class StudyProcessService {
 
   async findSubjectById(subjectId: string): Promise<Record<string, any>> {
     const result = await this.db
-      .collection('subjects')
+      .collection(collections.subjects)
       .findOne({ _id: new Types.ObjectId(subjectId), status: true });
     if (!result) {
       new CommonException(404, 'Subject not found.');
@@ -173,12 +176,12 @@ export class StudyProcessService {
     }
   }
 
-  lookupCommon(agg = []) {
+  lookupCommon(agg: Record<string, any>[]) {
     const aggregate = [
       ...agg,
       {
         $lookup: {
-          from: 'subjects',
+          from: collections.subjects,
           localField: 'subject',
           foreignField: '_id',
           as: 'subject',
@@ -187,7 +190,7 @@ export class StudyProcessService {
       { $unwind: '$subject' },
       {
         $lookup: {
-          from: 'studyprocesses',
+          from: collections.study_processes,
           localField: 'studyprocess',
           foreignField: '_id',
           as: 'studyprocess',

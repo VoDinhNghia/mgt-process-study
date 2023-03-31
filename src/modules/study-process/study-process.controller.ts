@@ -1,15 +1,22 @@
-import { Body, Controller, Post, Put, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Put,
+  Res,
+  UseGuards,
+  Get,
+  Param,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ResponseRequest } from 'src/utils/responseApi';
+import { ResponseRequest } from 'src/utils/utils.response-api';
 import { Response } from 'express';
 import { ErolesUser } from 'src/constants/constant';
 import { StudyProcessService } from './study-process.service';
 import { RoleGuard } from '../auth/guards/role-auth.guard';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/auth.jwt-auth.guard';
 import { CreateStudySubjectProcessDto } from './dtos/study-process.subject.dto';
-import { Get, Param, UseInterceptors } from '@nestjs/common/decorators';
 import { UpdateStudySubjectProcessDto } from './dtos/study-process.subject.update.dto';
-import { ValidatePropertyGuard } from 'src/validates/validateUpdateSubjectRegister';
 
 @Controller('api/study-process')
 @ApiTags('study-process')
@@ -34,7 +41,6 @@ export class StudyProcessController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @UseGuards(RoleGuard([ErolesUser.LECTURER]))
-  @UseInterceptors(ValidatePropertyGuard)
   async updateSubjectPoint(
     @Param('id') id: string,
     @Body() subjectDto: UpdateStudySubjectProcessDto,

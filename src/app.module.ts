@@ -4,22 +4,39 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { mongoUrl } from './configs/config';
 import { AuthModule } from './modules/auth/auth.module';
-import { ConfigConditionModule } from './modules/config-condition/config-condition.module';
-import { MgtTrainningPointModule } from './modules/mgt-trainning-point/mgt-trainning-point.module';
 import { StudyProcessModule } from './modules/study-process/study-process.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { ConfigsModule } from './modules/configs/configs.module';
+import { TrainningPointModule } from './modules/trainning-point/trainning-point.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(mongoUrl),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: `.env`,
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        uri: config.get('MONGO_URL'),
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
+    }),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 20,
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'src/public'),
     }),
     AuthModule,
     StudyProcessModule,
-    ConfigConditionModule,
-    MgtTrainningPointModule,
+    TrainningPointModule,
+    ConfigsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
